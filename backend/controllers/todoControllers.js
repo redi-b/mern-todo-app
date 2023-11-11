@@ -10,8 +10,6 @@ const getTodos = asynchandler(async (req, res) => {
     res.status(500);
     throw new Error("Couldn't get todos");
   }
-
-  res.status(200).json({ message: "Get Todos" });
 });
 
 const getTodo = asynchandler(async (req, res) => {
@@ -32,8 +30,6 @@ const getTodo = asynchandler(async (req, res) => {
     res.status(404);
     throw new Error("Todo not found");
   }
-
-  res.status(200).json({ message: "Get Todos" });
 });
 
 const createTodo = asynchandler(async (req, res) => {
