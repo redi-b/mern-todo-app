@@ -12,10 +12,17 @@ type ObjectKey = keyof typeof sortFunction;
 const TodosPage = () => {
   const [loading, setLoading] = useState(true);
   const [todos, setTodos] = useState([
-    { _id: "", title: "", body: "", createdAt: "", completed: false },
+    {
+      _id: "",
+      title: "",
+      body: "",
+      createdAt: "",
+      updatedAt: "",
+      completed: false,
+    },
   ]);
 
-  const [sortBy, setSortBy] = useState("Date");
+  const [sortBy, setSortBy] = useState("CreatedDate");
   const [sortOrder, setSortOrder] = useState("descending");
 
   useEffect(() => {
@@ -36,7 +43,8 @@ const TodosPage = () => {
         id="sortOption"
         className="px-2 py-1 pr-4 bg-gray-200 border-r rounded-l-sm outline-none appearance-none cursor-pointer border-r-gray-300"
       >
-        <option value="Date">Date</option>
+        <option value="CreatedDate">Date Created</option>
+        <option value="UpdatedDate">Date Modified</option>
         <option value="Title">Title</option>
       </select>
       <button
@@ -60,14 +68,17 @@ const TodosPage = () => {
           [...todos]
             .sort(sortFunction[`${sortOrder}${sortBy}` as ObjectKey])
             .map((todo) => (
-              <Todo
-                id={todo._id}
-                title={todo.title}
-                body={todo.body}
-                createdAt={new Date(todo.createdAt).toLocaleString()}
-                completed={todo.completed}
-                key={todo._id}
-              />
+              <>
+                <Todo
+                  id={todo._id}
+                  title={todo.title}
+                  body={todo.body}
+                  createdAt={new Date(todo.createdAt).toLocaleString()}
+                  updatedAt={new Date(todo.updatedAt).toLocaleString()}
+                  completed={todo.completed}
+                  key={todo._id}
+                />
+              </>
             ))}
       </TodosContainer>
     </div>

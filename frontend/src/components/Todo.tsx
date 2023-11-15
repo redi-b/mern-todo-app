@@ -9,10 +9,17 @@ interface TodoProps {
   body: string;
   completed: boolean;
   createdAt?: string;
+  updatedAt?: string;
 }
 
-const Todo = ({ id, title, body, completed, createdAt = "" }: TodoProps) => {
-
+const Todo = ({
+  id,
+  title,
+  body,
+  completed,
+  createdAt = "",
+  updatedAt,
+}: TodoProps) => {
   const [todoCompleted, setTodoCompleted] = useState(completed);
 
   const navigate = useNavigate();
@@ -32,8 +39,8 @@ const Todo = ({ id, title, body, completed, createdAt = "" }: TodoProps) => {
       <div className="relative flex">
         <input
           type="checkbox"
-          name="todo-check"
-          id="todo-check"
+          name={`todo-check-${id}`}
+          id={`todo-check-${id}`}
           checked={todoCompleted}
           onChange={(e) => {
             handleCheckedChange(e);
