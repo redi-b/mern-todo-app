@@ -3,14 +3,14 @@ import express from "express";
 import {
   getTodo,
   getTodos,
-  updateTodo,
   createTodo,
+  updateTodo,
   deleteTodo,
 } from "../controllers/todoControllers.js";
 
 const router = express.Router();
 
-router.route("/todos").get(getTodos).post(createTodo);
-router.route("/todos/:id").get(getTodo).put(updateTodo).delete(deleteTodo);
+router.route("/").get(getTodos).post(createTodo);
+router.route("/:id").get(getTodo).put(updateTodo).delete(deleteTodo);
 
 export default router;
