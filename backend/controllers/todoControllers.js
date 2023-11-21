@@ -3,7 +3,7 @@ import asynchandler from "express-async-handler";
 
 const getTodos = asynchandler(async (req, res) => {
   try {
-    let todos = await Todo.find();
+    let todos = await Todo.find({ userId: req.user._id });
 
     res.status(200).json({ ...todos });
   } catch (error) {
@@ -16,7 +16,7 @@ const getTodo = asynchandler(async (req, res) => {
   const { id } = req.params;
 
   try {
-    let todo = await Todo.findById(id);
+    let todo = await Todo.findOne({ _id: id, userId: req.user._id });
 
     res.status(200).json({
       _id: todo._id,
@@ -41,7 +41,7 @@ const createTodo = asynchandler(async (req, res) => {
   }
 
   try {
-    let todo = await Todo.create({ title, body });
+    let todo = await Todo.create({ title, body, userId: req.user._id });
 
     res.status(200).json({
       _id: todo._id,

@@ -1,38 +1,58 @@
 import { useEffect, useState } from "react";
+
 import Todo from "../components/Todo";
 import TodosContainer from "../components/TodosContainer";
+import ErrorMsg from "../components/ErrorMsg";
 
+import { TodoData } from "../types/Todo";
 import { sortFunction } from "../utils/sortTodos";
+
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 
-// import Axios from "axios";
+import { useAuthUserContext } from "../contexts/AuthUser";
+
+import { formatDistanceToNowStrict } from "date-fns";
 
 type ObjectKey = keyof typeof sortFunction;
 
 const TodosPage = () => {
+  const { authUser } = useAuthUserContext();
+
   const [loading, setLoading] = useState(true);
-  const [todos, setTodos] = useState([
-    {
-      _id: "",
-      title: "",
-      body: "",
-      createdAt: "",
-      updatedAt: "",
-      completed: false,
-    },
-  ]);
+  const [error, setError] = useState<string | null>(null);
+  const [todos, setTodos] = useState<Array<TodoData>>([]);
 
   const [sortBy, setSortBy] = useState("CreatedDate");
   const [sortOrder, setSortOrder] = useState("descending");
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/todos", { method: "GET" })
-      .then((res) => res.json())
-      .then((data) => {
+    const getTodos = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/todos", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${authUser.token}`,
+          },
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+          console.log(data);
+          setLoading(false);
+          setError(data.message);
+          return;
+        }
+
         setTodos(Object.values(data));
         setLoading(false);
-      })
-      .catch((err) => console.log(err.message));
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+        setError("Error loading todos! Please try again!");
+      }
+    };
+
+    getTodos();
   }, []);
 
   const sorter = (
@@ -64,22 +84,37 @@ const TodosPage = () => {
     <div>
       <TodosContainer sorter={sorter}>
         {loading && <div className="text-center">Loading</div>}
-        {loading ||
+        {!loading &&
+          !error &&
           [...todos]
             .sort(sortFunction[`${sortOrder}${sortBy}` as ObjectKey])
             .map((todo) => (
-              <>
-                <Todo
-                  id={todo._id}
-                  title={todo.title}
-                  body={todo.body}
-                  createdAt={new Date(todo.createdAt).toLocaleString()}
-                  updatedAt={new Date(todo.updatedAt).toLocaleString()}
-                  completed={todo.completed}
-                  key={todo._id}
-                />
-              </>
+              <Todo
+                key={todo._id}
+                id={todo._id}
+                title={todo.title}
+                body={todo.body}
+                completed={todo.completed}
+                createdAt={formatDistanceToNowStrict(
+                  new Date(todo.createdAt),
+
+                  { addSuffix: true }
+                )}
+                updatedAt={formatDistanceToNowStrict(
+                  new Date(todo.updatedAt),
+
+                  { addSuffix: true }
+                )}
+              />
             ))}
+        {!loading && error && (
+          <ErrorMsg className="mx-auto w-fit">{error}</ErrorMsg>
+        )}
+        {!loading && !error && !todos.length && (
+          <div className="text-xl font-light text-center">
+            Create your first todo!
+          </div>
+        )}
       </TodosContainer>
     </div>
   );

@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
-import router from "./routes/todoRoutes.js";
+import todoRouter from "./routes/todoRoutes.js";
+import userRouter from "./routes/userRoutes.js";
 import connectDB from "./config/db.js";
 import { errorHandler } from "./middlewares/errorMiddleware.js";
 import cors from "cors";
@@ -16,7 +17,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/api/todos", router);
+app.use("/api/todos", todoRouter);
+app.use("/api/user", userRouter);
 
 app.use(errorHandler);
 

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { BsCheck, BsTrash3Fill } from "react-icons/bs";
 import { deleteTodo, updateCompleted } from "../utils/apiUtils";
 import { useNavigate } from "react-router-dom";
+import { useAuthUserContext } from "../contexts/AuthUser";
 
 interface TodoProps {
   id: string;
@@ -17,9 +18,10 @@ const Todo = ({
   title,
   body,
   completed,
-  createdAt = "",
-  updatedAt,
+  createdAt,
 }: TodoProps) => {
+  const { authUser } = useAuthUserContext();
+
   const [todoCompleted, setTodoCompleted] = useState(completed);
 
   const navigate = useNavigate();
@@ -27,7 +29,7 @@ const Todo = ({
   const handleCheckedChange = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const newTodoData = await updateCompleted(id, e);
+    const newTodoData = await updateCompleted(id, authUser.token, e);
     setTodoCompleted(newTodoData.todo.completed);
   };
 
@@ -70,7 +72,7 @@ const Todo = ({
             className="hidden p-2 bg-gray-300 rounded-md group-hover:block hover:bg-gray-400"
             onClick={(e) => {
               e.preventDefault();
-              deleteTodo(id);
+              deleteTodo(id, authUser.token);
               navigate(0);
             }}
           >

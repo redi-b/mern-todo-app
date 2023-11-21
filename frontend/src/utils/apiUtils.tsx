@@ -15,18 +15,23 @@ export const getTodos = async () => {
   }
 };
 
-export const createTodo = async (title: string, body: string) => {
+export const createTodo = async (
+  title: string,
+  body: string,
+  token: string
+) => {
   try {
     const response = await fetch(`${URL}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ body, title }),
     });
     const data = await response.json();
 
-    return data;
+    return { response, data };
   } catch (error) {
     console.log(error);
   }
@@ -34,12 +39,16 @@ export const createTodo = async (title: string, body: string) => {
 
 export const updateCompleted = async (
   id: string | undefined,
+  token: string,
   event: React.ChangeEvent<HTMLInputElement>
 ) => {
   try {
     const response = await fetch(`${URL}/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({ completed: `${event.target.checked}` }),
     });
     const data = response.json();
@@ -49,11 +58,18 @@ export const updateCompleted = async (
     console.log(error);
   }
 };
-export const updateTitle = async (id: string | undefined, title: string | undefined) => {
+export const updateTitle = async (
+  id: string | undefined,
+  title: string,
+  token: string
+) => {
   try {
     const response = await fetch(`${URL}/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({ title }),
     });
     const data = response.json();
@@ -63,11 +79,18 @@ export const updateTitle = async (id: string | undefined, title: string | undefi
     console.log(error);
   }
 };
-export const updateBody = async (id: string | undefined, body: string) => {
+export const updateBody = async (
+  id: string | undefined,
+  body: string,
+  token: string
+) => {
   try {
     const response = await fetch(`${URL}/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({ body }),
     });
     const data = response.json();
@@ -78,9 +101,12 @@ export const updateBody = async (id: string | undefined, body: string) => {
   }
 };
 
-export const deleteTodo = async (id: string | undefined) => {
+export const deleteTodo = async (id: string | undefined, token: string) => {
   try {
-    const response = await fetch(`${URL}/${id}`, { method: "DELETE" });
+    const response = await fetch(`${URL}/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
     const data = await response.json();
 
     return data;

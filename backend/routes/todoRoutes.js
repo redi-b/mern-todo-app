@@ -7,10 +7,14 @@ import {
   updateTodo,
   deleteTodo,
 } from "../controllers/todoControllers.js";
+import authMiddleware from "../middlewares/authMiddleware.js";
 
-const router = express.Router();
+const todoRouter = express.Router();
 
-router.route("/").get(getTodos).post(createTodo);
-router.route("/:id").get(getTodo).put(updateTodo).delete(deleteTodo);
+// protect routes
+todoRouter.use(authMiddleware);
 
-export default router;
+todoRouter.route("/").get(getTodos).post(createTodo);
+todoRouter.route("/:id").get(getTodo).put(updateTodo).delete(deleteTodo);
+
+export default todoRouter;

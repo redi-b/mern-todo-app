@@ -2,8 +2,11 @@ import { useState } from "react";
 import { BsArrowLeft } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { createTodo } from "../utils/apiUtils";
+import { useAuthUserContext } from "../contexts/AuthUser";
 
 const AddTodo = () => {
+  const { authUser } = useAuthUserContext();
+
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
@@ -13,13 +16,13 @@ const AddTodo = () => {
     event.preventDefault();
 
     try {
-      const newTodo = await createTodo(title, body);
-      console.log(newTodo);
+      const newTodo = await createTodo(title, body, authUser.token);
 
-      if (newTodo) {
-        console.log("Redirecting...");
-        navigate("/");
+      if (!newTodo?.response.ok) {
+        return;
       }
+
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
