@@ -29,7 +29,7 @@ const TodoPage = () => {
 
   const [todoTitle, setTodoTitle] = useState(todoData.title);
   const [todoBody, setTodoBody] = useState(todoData.body);
-  const [editing, setEditing] = useState("none");
+  // const [editing, setEditing] = useState("none");
 
   const navigate = useNavigate();
 
@@ -171,7 +171,7 @@ const TodoPage = () => {
                 value={todoTitle}
                 onChange={handleTitleChange}
                 onKeyDown={handleTitleKeyDown}
-                onFocus={() => setEditing("title")}
+                // onFocus={() => setEditing("title")}
                 onBlur={() => handleTitleBlur(false)}
               />
             </div>
@@ -192,7 +192,7 @@ const TodoPage = () => {
             value={todoBody}
             onChange={handleBodyChange}
             onKeyDown={handleBodyKeyDown}
-            onFocus={() => setEditing("body")}
+            // onFocus={() => setEditing("body")}
             onBlur={() => handleBodyBlur(false)}
           ></textarea>
           <div className="flex flex-col self-end text-sm font-extralight">

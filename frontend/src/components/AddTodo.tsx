@@ -30,7 +30,7 @@ const AddTodo = () => {
 
   return (
     <div className="flex flex-col gap-6 w-[55vw] max-md:w-[65vw] max-sm:w-[85vw] p-6 my-4 mx-auto ">
-      <Link to="/">
+      <Link to="/" className="w-fit">
         <BsArrowLeft className="p-2 text-4xl font-black bg-gray-200 rounded-full" />
       </Link>
       <span className="text-xl font-bold text-teal-700">New Todo</span>

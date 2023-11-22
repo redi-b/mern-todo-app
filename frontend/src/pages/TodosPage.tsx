@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 import Todo from "../components/Todo";
 import TodosContainer from "../components/TodosContainer";
@@ -6,12 +7,11 @@ import ErrorMsg from "../components/ErrorMsg";
 
 import { TodoData } from "../types/Todo";
 import { sortFunction } from "../utils/sortTodos";
+import { useAuthUserContext } from "../contexts/AuthUser";
 
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 
-import { useAuthUserContext } from "../contexts/AuthUser";
-
-import { formatDistanceToNowStrict } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 
 type ObjectKey = keyof typeof sortFunction;
 
@@ -95,12 +95,12 @@ const TodosPage = () => {
                 title={todo.title}
                 body={todo.body}
                 completed={todo.completed}
-                createdAt={formatDistanceToNowStrict(
+                createdAt={formatDistanceToNow(
                   new Date(todo.createdAt),
 
                   { addSuffix: true }
                 )}
-                updatedAt={formatDistanceToNowStrict(
+                updatedAt={formatDistanceToNow(
                   new Date(todo.updatedAt),
 
                   { addSuffix: true }
@@ -111,9 +111,9 @@ const TodosPage = () => {
           <ErrorMsg className="mx-auto w-fit">{error}</ErrorMsg>
         )}
         {!loading && !error && !todos.length && (
-          <div className="text-xl font-light text-center">
+          <Link to={"/create"} className="mx-auto text-xl font-light w-fit">
             Create your first todo!
-          </div>
+          </Link>
         )}
       </TodosContainer>
     </div>

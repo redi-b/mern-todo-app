@@ -141,14 +141,17 @@ const AuthForm = () => {
         {form === "login" && (
           <form className="flex flex-col gap-4" onSubmit={handleLogin}>
             <input
+              name="email"
               type="email"
               className={`${inputStyles}`}
               placeholder="Email"
               value={loginEmail}
               required
+              autoFocus
               onChange={(e) => setLoginEmail(e.target.value)}
             />
             <input
+              name="password"
               type="password"
               className={`${inputStyles}`}
               value={loginPassword}
@@ -165,14 +168,17 @@ const AuthForm = () => {
         {form === "signup" && (
           <form className="flex flex-col gap-4" onSubmit={handleSignup}>
             <input
+              name="firstname"
               type="text"
               className={`${inputStyles}`}
               placeholder="First Name"
               value={firstName}
               required
               onChange={(e) => setFirstName(e.target.value)}
+              autoFocus
             />
             <input
+              name="lastname"
               type="text"
               className={`${inputStyles}`}
               placeholder="Last Name"
@@ -181,6 +187,7 @@ const AuthForm = () => {
               onChange={(e) => setLastName(e.target.value)}
             />
             <input
+              id="email"
               type="email"
               className={`${inputStyles}`}
               placeholder="Email"
@@ -189,6 +196,7 @@ const AuthForm = () => {
               onChange={(e) => setSignupEmail(e.target.value)}
             />
             <input
+              name="password"
               type="password"
               className={`${inputStyles}`}
               value={signupPassword}
