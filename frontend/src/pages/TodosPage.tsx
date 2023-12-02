@@ -68,7 +68,7 @@ const TodosPage = () => {
         <option value="Title">Title</option>
       </select>
       <button
-        className="h-full p-1.5 text-base bg-gray-200 rounded-r-sm"
+        className="h-full p-1.5 text-base bg-gray-200 rounded-r-sm outline-none"
         onClick={() => {
           sortOrder === "descending"
             ? setSortOrder("ascending")

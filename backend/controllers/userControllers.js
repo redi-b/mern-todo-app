@@ -4,8 +4,8 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import expressAsyncHandler from "express-async-handler";
 
-function createToken(payload) {
-  return jwt.sign(payload, process.env.JWT_SECRET);
+function createToken(payload, expiresIn = "1m") {
+  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn });
 }
 
 export const login = expressAsyncHandler(async (req, res) => {
